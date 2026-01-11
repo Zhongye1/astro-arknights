@@ -27,14 +27,6 @@
         mask: linear-gradient(90deg, transparent, white 20%);
     }
     
-    .bg-list-texture {
-        background-image: url('/src/assets/img/list-bg-texture.png');
-        background-repeat: repeat;
-        background-size: 200px 200px;
-        opacity: 0.15;
-        mix-blend-mode: overlay;
-    }
-    
     .bg-layout {
         background-image: url('/images/layout-bg.jpg');
         background-size: cover;
