@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { useStore } from "@nanostores/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -22,11 +22,37 @@ export default function Operator() {
   const $readyToTouch = useStore(readyToTouch);
   const [active, setActive] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const currentOp = useMemo(
     () => arknightsConfig.rootPage.OPERATOR.data[currentIndex],
     [currentIndex]
   );
+
+  const handlePlayVoice = async () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error("Error playing audio:", error);
+      }
+    }
+  };
+
+  // 当切换角色时暂停音频
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [currentOp]);
 
   useEffect(() => {
     const isActive = $viewIndex === 2 && $readyToTouch;
@@ -40,6 +66,13 @@ export default function Operator() {
     <div
       className={`w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-auto transition-all duration-500 bg-black overflow-hidden ${active ? "opacity-100 visible" : "opacity-0 invisible"}`}
     >
+      {/* 隐藏的音频元素 */}
+      <audio
+        ref={audioRef}
+        src={currentOp.voice}
+        onEnded={() => setIsPlaying(false)}
+      />
+
       {/* 1. 背景层 (装饰大字 & 网格) */}
       <div className="absolute inset-0 pointer-events-none select-none">
         <div className="absolute inset-0 bg-list-texture  mix-blend-overlay" />
@@ -149,21 +182,31 @@ export default function Operator() {
               </div>
 
               {/* CV 语音展示 */}
-              <div className="voice-section">
-                <div className="voice-btn">
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 3v18l-6-6H2V9h4l6-6z" />
-                  </svg>
+              <div
+                className="voice-section group"
+                onClick={handlePlayVoice}
+                data-playing={isPlaying}
+              >
+                <div className="voice-btn-wrapper">
+                  <div className={`voice-btn ${isPlaying ? "is-playing" : ""}`}>
+                    <svg className="icon" viewBox="0 0 24 24">
+                      {isPlaying ? (
+                        <path d="M6 5h4v14H6zm8 0h4v14h-4z" /> // 暂停
+                      ) : (
+                        <path d="M8 5v14l11-7z" /> // 播放
+                      )}
+                    </svg>
+                  </div>
+                  {/* 装饰外圈 */}
+                  <div className="btn-echo" />
                 </div>
+
                 <div className="voice-info">
-                  <div className="voice-title">Character Voice</div>
+                  <div className="voice-title">CHARACTER VOICE</div>
                   <div className="voice-name">{currentOp.cv}</div>
                 </div>
-                <div className="voice-wave">
+
+                <div className="voice-wave-container">
                   {[...Array(20)].map((_, i) => (
                     <div key={i} className="wave-bar" />
                   ))}
