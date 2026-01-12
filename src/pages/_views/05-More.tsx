@@ -3,10 +3,10 @@ import { useStore } from "@nanostores/react";
 import {
   viewIndex,
   readyToTouch,
-  isFooterVisible, // 引入状态
+  isFooterVisible,
 } from "../../components/store/rootLayoutStore.ts";
 import { directions } from "../../components/store/lineDecoratorStore";
-import Footer from "./components/Footer.tsx"; // 引入你刚才创建的 Footer
+import Footer from "./components/Footer.tsx"; 
 
 // --- 类型定义 ---
 interface AkCard {
@@ -20,7 +20,6 @@ interface AkCard {
 }
 
 // --- 数据配置 ---
-// 这里使用了 Arknights 风格的图片和配色逻辑
 const AK_CARDS: AkCard[] = [
   {
     id: "01",
@@ -49,7 +48,7 @@ const AK_CARDS: AkCard[] = [
       />
     ),
     onClick: () =>
-      window.open("https://github.com/Zhongye1/BDdraw_DEV", "_blank"),
+      window.open("https://github.com/Yue-plus/astro-arknights", "_blank"),
   },
   {
     id: "03",
@@ -64,10 +63,7 @@ const AK_CARDS: AkCard[] = [
       />
     ),
     onClick: () =>
-      window.open(
-        "https://github.com/Zhongye1/BDdraw_DEV/tree/main/docs",
-        "_blank"
-      ),
+      window.open("https://arknights.astro.yue.zone/docs/", "_blank"),
   },
   {
     id: "04",

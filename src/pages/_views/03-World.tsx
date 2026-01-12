@@ -117,6 +117,11 @@ export default function World() {
       {/* 背景层 */}
       <div className="bg-layout absolute inset-0 bg-[#101010] opacity-90 z-[0]" />
 
+      {/* 背景文字 "WORLD" */}
+      <h1 className="absolute bottom-[5%] left-[10%] text-gray-800 dark:text-gray-900 font-bold text-9xl opacity-20 select-none z-[1] pointer-events-none">
+        WORLD
+      </h1>
+
       {/* 
           Z-Index 结构:
           0: 背景
