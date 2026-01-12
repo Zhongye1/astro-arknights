@@ -64,7 +64,9 @@ export default function Operator() {
 
   return (
     <div
-      className={`w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-auto transition-all duration-500 bg-layout overflow-hidden ${active ? "opacity-100 visible" : "opacity-0 invisible"}`}
+      className={`w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-auto transition-all duration-700 ease-in-out bg-layout overflow-hidden ${
+        active ? "opacity-100 visible" : "opacity-0 invisible"
+      }`}
     >
       {/* 隐藏的音频元素 */}
       <audio
@@ -75,7 +77,7 @@ export default function Operator() {
 
       {/* 1. 背景层 (装饰大字 & 网格) */}
       <div className="absolute inset-0 pointer-events-none select-none">
-        <div className="absolute inset-0 bg-list-texture  mix-blend-overlay" />
+        <div className="absolute inset-0 mix-blend-overlay" />
         <AnimatePresence mode="wait">
           <motion.div
             key={currentOp.id}
@@ -120,7 +122,7 @@ export default function Operator() {
           <motion.img
             key={currentOp.id}
             src={currentOp.fullbody}
-            initial={{ opacity: 0, x: 100, scale: 0.95 }}
+            initial={{ opacity: 0, x: 100, scale: 1 }}
             animate={{
               opacity: 1,
               x: 0,
@@ -129,7 +131,7 @@ export default function Operator() {
             exit={{
               opacity: 0,
               x: -40,
-              scale: 1.05, // 消失时轻微放大，模拟镜头拉近感
+              scale: 1.05, // 消失时轻微放大
               transition: { duration: 0.3 },
             }}
             transition={{

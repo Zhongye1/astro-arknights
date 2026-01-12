@@ -11,6 +11,7 @@ import ParticleFactory from "../../components/ParticleFactory.tsx";
 import WorldOverview from "../../components/World/WorldOverview";
 import WorldDetails from "../../components/World/WorldDetails";
 import { motion, AnimatePresence } from "framer-motion";
+import AshParticles from "../../components/World/AshParticles.tsx";
 
 const items = config.rootPage.WORLD!.items;
 
@@ -114,7 +115,7 @@ export default function World() {
       }`}
     >
       {/* 背景层 */}
-      <div className="absolute inset-0 bg-[#101010] opacity-90 z-[0]" />
+      <div className="bg-layout absolute inset-0 bg-[#101010] opacity-90 z-[0]" />
 
       {/* 
           Z-Index 结构:
@@ -167,7 +168,7 @@ export default function World() {
           />
         </div>
       )}
-
+      <AshParticles count={35} />
       <PortraitBottomGradientMask />
     </div>
   );

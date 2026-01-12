@@ -403,7 +403,7 @@ export default function Information() {
             "linear-gradient(0deg, #000 5rem, transparent 20rem)",
         }}
       />
-      <div className="w-full h-full absolute top-0 left-0 portrait:hidden bg-common-mask bg-[length:100%_100%] mix-blend-overlay pointer-events-none" />
+      <div className="w-full h-full absolute top-0 left-0 portrait:hidden mix-blend-overlay pointer-events-none transition-opacity duration-500" />
 
       {/* 左侧内容区整体动效 */}
       <div
