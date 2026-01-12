@@ -3,6 +3,9 @@ import arknightsConfig from "../../../arknights.config.tsx";
 
 export const viewIndex = atom<number>(0)
 
+// 新增：控制 Footer 是否显示的状态
+export const isFooterVisible = atom(false); 
+
 export function viewIndexSetNext() {
     const viewIndexNow = viewIndex.get()
     if (viewIndexNow < arknightsConfig.navbar.items.length - 1) viewIndex.set(viewIndexNow + 1)
