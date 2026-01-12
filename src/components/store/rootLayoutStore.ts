@@ -6,6 +6,9 @@ export const viewIndex = atom<number>(0)
 // 新增：控制 Footer 是否显示的状态
 export const isFooterVisible = atom(false); 
 
+// [新增] 用于锁定主页面滚动，当子页面（如Gallery详情）打开时设为 true
+export const isScrollLocked = atom(false);
+
 export function viewIndexSetNext() {
     const viewIndexNow = viewIndex.get()
     if (viewIndexNow < arknightsConfig.navbar.items.length - 1) viewIndex.set(viewIndexNow + 1)

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 // 引入新状态 isFooterVisible
-import {viewIndex, viewIndexSetNext, viewIndexSetPrev, isFooterVisible} from "../../components/store/rootLayoutStore.ts";
+import {viewIndex, viewIndexSetNext, viewIndexSetPrev, isFooterVisible, isScrollLocked} from "../../components/store/rootLayoutStore.ts";
 import arknightsConfig from "../../../arknights.config.tsx";
 import RootPageViewTemplate from "./RootPageViewTemplate.tsx";
 import Index from "./00-Index.tsx";
@@ -52,11 +52,10 @@ export default function RootPageViews() {
     const startTouchY = useRef(0)
 
     // --- 修改触摸逻辑 ---
-    const handleTouchStart = useCallback((event: TouchEvent) => {
-        startTouchY.current = event.touches[0].clientY
-    }, [])
-
     const handleTouchEnd = useCallback((event: TouchEvent) => {
+        // [新增] 如果滚动被锁定（例如正在查看图集），则不执行主页面切换
+        if (isScrollLocked.get()) return;
+
         const diffY = startTouchY.current - event.changedTouches[0].clientY
         if (Math.abs(diffY) > 100) { // 稍微降低一点触发阈值
             // 向上滑 (手指由下往上，试图看下面) -> Next / Show Footer
@@ -81,6 +80,10 @@ export default function RootPageViews() {
     }, [localViewIndex])
 
     useEffect(() => {
+        const handleTouchStart = (event: TouchEvent) => {
+            startTouchY.current = event.touches[0].clientY
+        }
+
         const rootElement = document.getElementById("root-page-views")
         rootElement!.addEventListener("touchstart", handleTouchStart)
         rootElement!.addEventListener("touchend", handleTouchEnd)
@@ -88,13 +91,16 @@ export default function RootPageViews() {
             rootElement!.removeEventListener("touchstart", handleTouchStart)
             rootElement!.removeEventListener("touchend", handleTouchEnd)
         }
-    }, [handleTouchStart, handleTouchEnd])
+    }, [handleTouchEnd])
 
     const lastScrollTime = useRef(0);
 
     // --- 修改滚轮逻辑 ---
     useEffect(() => {
         const handleScroll = (event: WheelEvent) => {
+            // [新增] 如果滚动被锁定（例如正在查看图集），则不执行主页面切换
+            if (isScrollLocked.get()) return; 
+
             if (performance.now() - lastScrollTime.current > 800) { // 稍微缩短一点冷却时间以获得更跟手的体验
                 
                 // 向下滚动 (看下面内容)
